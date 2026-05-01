@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invista com Nosso Capital | Comece com US$100</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold-1: #f5c842;
+      --gold-2: #e8a000;
+      --gold-3: #ffd96a;
+      --gold-grad: linear-gradient(135deg, #ffd96a 0%, #f5c842 40%, #c9860a 100%);
+      --dark-bg: #080b10;
+      --dark-card: #0e1318;
+      --dark-border: #1e2733;
+      --text-main: #e8edf3;
+      --text-muted: #8899aa;
+      --green: #00e676;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .playfair { font-family: 'Playfair Display', serif; }
+
+    .gold-text {
+      background: var(--gold-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold-grad);
+      color: #0a0700;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 16px 36px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(245,200,66,0.25);
+      white-space: nowrap;
+    }
+    .btn-gold::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.15);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(245,200,66,0.4); }
+    .btn-gold:hover::after { opacity: 1; }
+    .btn-gold:active { transform: translateY(0); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--gold-1);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 32px;
+      border-radius: 4px;
+      border: 1.5px solid var(--gold-2);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { background: rgba(245,200,66,0.08); }
+
+    .pulse {
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 4px 24px rgba(245,200,66,0.25); }
+      50% { box-shadow: 0 4px 40px rgba(245,200,66,0.55); }
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION 1 — HERO
+    ───────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+
+    /* animated radial glow */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: -160px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 900px;
+      background: radial-gradient(ellipse at center,
+        rgba(245,200,66,0.08) 0%,
+        rgba(245,200,66,0.03) 40%,
+        transparent 70%);
+      animation: glow-spin 14s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes glow-spin {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to   { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    /* grid lines background */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245,200,66,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,200,66,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(245,200,66,0.1);
+      border: 1px solid rgba(245,200,66,0.3);
+      color: var(--gold-1);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.12;
+      max-width: 820px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.7s 0.15s ease both;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+      animation: fadeUp 0.7s 0.25s ease both;
+    }
+
+    .hero-offer {
+      display: inline-block;
+      background: rgba(0,230,118,0.08);
+      border: 1px solid rgba(0,230,118,0.25);
+      color: var(--green);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 8px 20px;
+      border-radius: 4px;
+      margin-bottom: 36px;
+      animation: fadeUp 0.7s 0.32s ease both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      animation: fadeUp 1s 1s ease both;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold-2), transparent);
+      animation: scroll-bob 2s ease-in-out infinite;
+    }
+    @keyframes scroll-bob {
+      0%, 100% { transform: scaleY(1); opacity: 0.8; }
+      50% { transform: scaleY(1.3); opacity: 0.4; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION 2 — CAPTAÇÃO DE LEAD
+    ───────────────────────────────────────── */
+    #captacao {
+      padding: 100px 24px;
+      position: relative;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-2);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 480px;
+    }
+
+    .captacao-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    /* chart illustration */
+    .chart-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--dark-border);
+      background: var(--dark-card);
+      padding: 24px;
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .chart-ticker { font-weight: 700; font-size: 1rem; }
+    .chart-price { color: var(--green); font-weight: 700; font-size: 1.1rem; }
+    .chart-change { color: var(--green); font-size: 0.85rem; background: rgba(0,230,118,0.1); padding: 3px 8px; border-radius: 4px; }
+
+    .chart-svg-wrap {
+      position: relative;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .mini-stat {
+      background: rgba(245,200,66,0.05);
+      border: 1px solid rgba(245,200,66,0.12);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .mini-stat-val { font-weight: 700; font-size: 1.1rem; color: var(--gold-1); }
+    .mini-stat-lbl { color: var(--text-muted); font-size: 0.72rem; margin-top: 2px; }
+
+    .captacao-content {}
+
+    .steps-list {
+      list-style: none;
+      margin: 32px 0 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .step-num {
+      min-width: 36px;
+      height: 36px;
+      background: var(--gold-grad);
+      color: #080500;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-text strong { display: block; font-weight: 600; margin-bottom: 2px; }
+    .step-text span { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* ─────────────────────────────────────────
+       SECTION 3 — PROVA SOCIAL
+    ───────────────────────────────────────── */
+    #prova {
+      padding: 100px 24px;
+      background: linear-gradient(180deg, var(--dark-bg) 0%, #0b0e13 50%, var(--dark-bg) 100%);
+    }
+
+    .prova-center { text-align: center; max-width: 800px; margin: 0 auto; }
+
+    .quote-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 8rem;
+      line-height: 0.5;
+      color: var(--gold-1);
+      opacity: 0.18;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .testimonial-card {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      border-radius: 16px;
+      padding: 48px 40px 40px;
+      position: relative;
+      margin-top: 48px;
+      box-shadow: 0 0 60px rgba(0,0,0,0.4);
+    }
+    .testimonial-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(245,200,66,0.2), transparent 50%, rgba(245,200,66,0.08));
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: xor;
+      padding: 1px;
+      pointer-events: none;
+    }
+
+    .testimonial-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: center;
+    }
+    .author-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--gold-grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: #080500;
+      flex-shrink: 0;
+    }
+    .author-info strong { display: block; font-weight: 700; }
+    .author-info span { color: var(--text-muted); font-size: 0.85rem; }
+
+    .stars {
+      color: var(--gold-1);
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .result-badge {
+      display: inline-block;
+      background: rgba(0,230,118,0.1);
+      border: 1px solid rgba(0,230,118,0.25);
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-left: 10px;
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION 4 — CTA FINAL
+    ───────────────────────────────────────── */
+    #cta-final {
+      padding: 100px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta-final::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(ellipse, rgba(245,200,66,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-final-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .cta-box {
+      background: var(--dark-card);
+      border: 1px solid rgba(245,200,66,0.2);
+      border-radius: 20px;
+      padding: 64px 48px;
+      box-shadow: 0 0 80px rgba(245,200,66,0.05), 0 40px 80px rgba(0,0,0,0.5);
+    }
+
+    .cta-final-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .cta-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .cta-offer-chip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245,200,66,0.08);
+      border: 1px solid rgba(245,200,66,0.2);
+      color: var(--gold-1);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 100px;
+    }
+    .chip svg { width: 14px; height: 14px; }
+
+    .disclaimer {
+      margin-top: 20px;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION 5 — FOOTER
+    ───────────────────────────────────────── */
+    #footer {
+      padding: 60px 24px 40px;
+      border-top: 1px solid var(--dark-border);
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .footer-tagline {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 48px;
+    }
+
+    .footer-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .logos-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      margin-bottom: 48px;
+    }
+
+    .logo-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      border-radius: 8px;
+      padding: 10px 18px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .logo-pill:hover { border-color: rgba(245,200,66,0.3); transform: translateY(-2px); }
+    .logo-pill img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 4px;
+      filter: brightness(0.9);
+    }
+    .logo-pill span {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .footer-copy {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      border-top: 1px solid var(--dark-border);
+      padding-top: 24px;
+      margin-top: 20px;
+    }
+
+    /* ─────────────────────────────────────────
+       DATETIME PICKER MODAL
+    ───────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--dark-card);
+      border: 1px solid rgba(245,200,66,0.25);
+      border-radius: 16px;
+      padding: 40px 36px;
+      max-width: 420px;
+      width: 100%;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.25s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-close:hover { color: var(--text-main); }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .modal-sub {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+    }
+
+    .modal label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .modal input[type="date"],
+    .modal input[type="time"],
+    .modal input[type="text"],
+    .modal input[type="tel"] {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--dark-border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal input:focus { border-color: var(--gold-2); }
+
+    .modal-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .btn-modal {
+      width: 100%;
+      padding: 16px;
+      font-size: 1rem;
+      border-radius: 8px;
+      margin-top: 6px;
+      justify-content: center;
+    }
+
+    /* ─── ANIMATED CANDLESTICK CHART ─── */
+    .candle-area {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ─── PETROBRAS IDENTITY BAR ─── */
+    .petr-identity {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--dark-border);
+      margin-bottom: 4px;
+    }
+    .petr-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .petr-svg {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(26,79,138,0.5), 0 0 14px rgba(0,176,79,0.2);
+    }
+    .petr-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+    .petr-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      letter-spacing: 0.03em;
+    }
+    .petr-live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,230,118,0.1);
+      border: 1px solid rgba(0,230,118,0.25);
+      color: var(--green);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+    .petr-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: petr-blink 1.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes petr-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    /* ─── VOLUME STRIP ─── */
+    .vol-strip {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 28px;
+      margin: 6px 0 14px;
+      opacity: 0.55;
+    }
+    .vol-bar {
+      flex: 1;
+      border-radius: 1px 1px 0 0;
+      min-height: 3px;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--dark-border), transparent);
+      margin: 0 auto;
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE — TABLET (≤ 900px)
+    ───────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .captacao-grid { grid-template-columns: 1fr; gap: 40px; }
+      .cta-box { padding: 48px 36px; }
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE — MOBILE (≤ 768px)
+    ───────────────────────────────────────── */
+    @media (max-width: 768px) {
+      #hero { padding: 100px 20px 100px; min-height: 100svh; }
+      #hero::after { width: 500px; height: 500px; top: -80px; }
+
+      /* Force all reveals visible on mobile — IntersectionObserver is unreliable on mobile */
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        transition-delay: 0s !important;
+      }
+
+      .hero-badge { font-size: 0.7rem; padding: 5px 14px; margin-bottom: 20px; }
+
+      .hero-ctas {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
+      }
+      .btn-gold { justify-content: center; font-size: 0.92rem; padding: 15px 24px; }
+      .btn-outline { justify-content: center; font-size: 0.88rem; padding: 13px 24px; }
+
+      .hero-offer { font-size: 0.9rem; padding: 8px 14px; }
+
+      #captacao { padding: 72px 20px; }
+      .captacao-grid { grid-template-columns: 1fr; gap: 36px; }
+      .mini-stats { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+      .mini-stat { padding: 10px 6px; }
+      .mini-stat-val { font-size: 0.95rem; }
+      .mini-stat-lbl { font-size: 0.65rem; }
+
+      #prova { padding: 72px 20px; }
+      .testimonial-card { padding: 36px 24px 28px; margin-top: 32px; }
+      .testimonial-quote { font-size: clamp(1.1rem, 4vw, 1.4rem); }
+      .quote-mark { font-size: 5rem; }
+
+      #cta-final { padding: 72px 20px 100px; }
+      .cta-box {
+        padding: 36px 22px;
+        border-radius: 14px;
+      }
+      .cta-offer-chip { gap: 8px; }
+      .chip { font-size: 0.78rem; padding: 6px 12px; }
+      .cta-final-headline { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+
+      #footer { padding: 48px 20px 80px; }
+      .logos-row { gap: 14px; }
+      .logo-pill { padding: 8px 12px; gap: 6px; }
+      .logo-pill img { width: 60px; height: 60px; }
+      .logo-pill span { font-size: 0.75rem; }
+
+      .modal { padding: 32px 22px; margin: 12px; max-width: calc(100% - 24px); }
+      .modal-grid-2 { grid-template-columns: 1fr; }
+      .modal-title { font-size: 1.3rem; }
+
+      .hero-scroll { bottom: 80px; }
+      .petr-identity { flex-wrap: wrap; gap: 8px; }
+      .petr-name { font-size: 0.9rem; }
+      .petr-desc { font-size: 0.62rem; }
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE — SMALL PHONES (≤ 420px)
+    ───────────────────────────────────────── */
+    @media (max-width: 420px) {
+      #hero { padding: 88px 16px 96px; }
+      .hero-badge { font-size: 0.65rem; letter-spacing: 0.1em; }
+
+      .section-title { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+
+      .cta-box { padding: 28px 18px; }
+      .chip { font-size: 0.72rem; padding: 5px 10px; }
+
+      .mini-stats { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+      .mini-stat-val { font-size: 0.85rem; }
+      .mini-stat-lbl { font-size: 0.6rem; }
+
+      .logo-pill { padding: 6px 10px; }
+      .logo-pill img { width: 44px; height: 44px; }
+      .logo-pill span { font-size: 0.68rem; }
+
+      .testimonial-card { padding: 28px 18px 24px; }
+      .author-avatar { width: 44px; height: 44px; font-size: 1rem; }
+      .result-badge { display: block; margin: 6px 0 0 0; font-size: 0.72rem; }
+    }
+
+    /* ─────────────────────────────────────────
+       STICKY MOBILE CTA BAR
+    ───────────────────────────────────────── */
+    .sticky-cta {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .sticky-cta {
+        display: flex;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        z-index: 200;
+        padding: 12px 16px;
+        background: linear-gradient(to top, rgba(8,11,16,0.98) 80%, transparent);
+        backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(245,200,66,0.15);
+      }
+      .sticky-cta a {
+        flex: 1;
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 15px 20px;
+        border-radius: 6px;
+      }
+    }
+
+    /* SCROLLREVEAL-LIKE */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    /* ─── DAY PICKER ─── */
+    .day-picker {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .day-option {
+      cursor: pointer;
+      border: 1.5px solid var(--dark-border);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: center;
+      background: rgba(255,255,255,0.03);
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      user-select: none;
+    }
+    .day-option:hover {
+      border-color: var(--gold-1);
+      background: rgba(245,200,66,0.06);
+    }
+    .day-option.selected {
+      border-color: var(--gold-2);
+      background: rgba(245,200,66,0.12);
+      box-shadow: 0 0 0 1px var(--gold-2);
+      transform: scale(1.03);
+    }
+    .day-option .day-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .day-option.selected .day-label { color: var(--gold-1); }
+    .day-option .day-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1;
+    }
+    .day-option.selected .day-num { color: var(--gold-2); }
+    .day-option .day-month {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    .day-option.selected .day-month { color: var(--gold-1); }
+    .day-option .day-tag {
+      display: inline-block;
+      margin-top: 7px;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 100px;
+      background: rgba(245,200,66,0.12);
+      color: var(--gold-1);
+      border: 1px solid rgba(245,200,66,0.25);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ──────────────────────────────────────────
+     SECTION 1: HERO
+──────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge">⚡ Oportunidade Exclusiva para Iniciantes</div>
+
+  <h1 class="hero-headline playfair">
+    O Mercado é Global.<br>
+    O Capital é Nosso.<br>
+    <span class="gold-text">O Lucro é Seu.</span><br>
+    Inicie em Alto Nível com Apenas <span class="gold-text">US$20</span>
+  </h1>
+
+  <p class="hero-sub">
+   Pare de operar pequeno. Acesse uma conta de <strong>US$&nbsp;10.000</strong> com o suporte de quem já conhece o caminho sem expor o seu próprio patrimônio.
+  </p>
+
+  <div class="hero-offer">
+    ✅ Comece com apenas <strong>US$&nbsp;20,00</strong> → Acesse uma banca de <strong>US$&nbsp;10.000</strong>
+  </div>
+
+  <div class="hero-ctas">
+    <a href="#" class="btn-gold pulse" onclick="openModal(event)">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Marcar Reunião no WhatsApp
+    </a>
+    <a href="#captacao" class="btn-outline">
+      Como funciona →
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>ROLAR</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ──────────────────────────────────────────
+     SECTION 2: CAPTAÇÃO DE LEAD
+──────────────────────────────────────────── -->
+<section id="captacao">
+  <div class="captacao-grid">
+
+    <!-- Chart column -->
+    <div class="chart-wrap reveal">
+
+      <!-- Petrobras identity bar -->
+      <div class="petr-identity">
+        <div class="petr-logo-wrap">
+          <!-- Petrobras SVG logo mark -->
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="petr-svg">
+            <circle cx="24" cy="24" r="24" fill="#1a4f8a"/>
+            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
+                  font-family="Arial Black, sans-serif" font-size="10" font-weight="900"
+                  fill="#00b04f" letter-spacing="-0.5">PETRO</text>
+            <text x="50%" y="74%" dominant-baseline="middle" text-anchor="middle"
+                  font-family="Arial Black, sans-serif" font-size="7.5" font-weight="900"
+                  fill="#ffffff" letter-spacing="1">BRAS</text>
+          </svg>
+          <div>
+            <div class="petr-name">Petrobras</div>
+            <div class="petr-desc">Petróleo Brasileiro S.A. — B3: PETR4</div>
+          </div>
+        </div>
+        <div class="petr-live-pill">
+          <span class="petr-dot"></span> AO VIVO
+        </div>
+      </div>
+
+      <!-- Price row -->
+      <div class="chart-header" style="margin-top:14px;">
+        <div>
+          <div style="font-size:0.7rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">PETR4 · Preço Atual</div>
+          <span class="chart-price" id="live-price" style="font-size:1.6rem;font-family:'Playfair Display',serif;">R$&nbsp;39,72</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="chart-change" id="live-change">+2.41%</span>
+        </div>
+      </div>
+
+      <div class="candle-area">
+        <canvas id="chartCanvas" width="440" height="180" style="width:100%;height:100%;"></canvas>
+      </div>
+
+      <!-- Volume bar strip -->
+      <div class="vol-strip" id="volStrip"></div>
+
+      <div class="mini-stats">
+        <div class="mini-stat">
+          <div class="mini-stat-val">US$&nbsp;10K</div>
+          <div class="mini-stat-lbl">Banca Disponível</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-val">US$&nbsp;20</div>
+          <div class="mini-stat-lbl">Valor Mínimo</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-val">24h</div>
+          <div class="mini-stat-lbl">Suporte Ativo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content column -->
+    <div class="captacao-content reveal" style="transition-delay:0.15s">
+      <p class="section-label">Como funciona</p>
+      <h2 class="section-title">
+        3 Passos Para Operar com
+        <span class="gold-text">Nosso Capital</span>
+      </h2>
+      <p class="section-sub">
+        Você não precisa de experiência prévia. Nós te ensinamos, te acompanhamos e você opera com nossa banca enquanto aprende a crescer.
+      </p>
+
+      <ul class="steps-list">
+        <li class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <strong>Marque sua Reunião Gratuita</strong>
+            <span>Escolha o dia, horário e venha sem compromisso entender o modelo.</span>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <strong>Deposite apenas US$&nbsp;20,00</strong>
+            <span>Esse valor garante seu acesso à banca de US$&nbsp;10.000 para operar de verdade.</span>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <strong>Opere e Lucre no Mercado Global</strong>
+            <span>Amazon, Apple, Mercado Livre e muito mais — com mentoria em tempo real.</span>
+          </div>
+        </li>
+      </ul>
+
+      <a href="#" class="btn-gold" onclick="openModal(event)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 0C5.372 0 0 5.373 0 12.001c0 2.117.553 4.103 1.522 5.83L.038 23.998l6.345-1.664A11.954 11.954 0 0011.998 24C18.625 24 24 18.628 24 12.001 24 5.373 18.625 0 11.998 0zm0 21.998c-1.86 0-3.602-.5-5.102-1.373l-.364-.217-3.768.988 1.007-3.682-.237-.376A9.959 9.959 0 012 12.001C2 6.476 6.476 2 11.998 2 17.522 2 22 6.476 22 12.001c0 5.522-4.478 9.997-10.002 9.997z"/></svg>
+        Marcar Minha Reunião Agora
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ──────────────────────────────────────────
+     SECTION 3: PROVA SOCIAL
+──────────────────────────────────────────── -->
+<section id="prova">
+  <div class="prova-center reveal">
+    <p class="section-label">Depoimento Real</p>
+    <h2 class="section-title">
+      Quem Já Está Operando<br>
+      <span class="gold-text">Com Nosso Capital</span>
+    </h2>
+
+    <div class="testimonial-card">
+      <span class="quote-mark">"</span>
+      <span class="stars">★★★★★</span>
+      <p class="testimonial-quote">
+        Eu não tinha <span class="gold-text">nenhum capital próprio</span> para investir. Achei que o mercado financeiro era só para quem já tinha dinheiro. Depois de uma única reunião, entrei com US$&nbsp;20 e já na primeira semana vi minha banca de US$&nbsp;10.000 em operação. Isso mudou completamente a minha visão sobre investimentos.
+      </p>
+
+      <div class="testimonial-author">
+        <div class="author-avatar">C</div>
+        <div class="author-info">
+          <strong>
+            Carlos Vieira
+            <span class="result-badge">✓ Resultado Verificado</span>
+          </strong>
+          <span>Iniciante · Operador ativo desde Jan/2025</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ──────────────────────────────────────────
+     SECTION 4: CTA FINAL
+──────────────────────────────────────────── -->
+<section id="cta-final">
+  <div class="cta-final-wrap reveal">
+    <div class="cta-box">
+      <p class="section-label" style="text-align:center;">Última Chamada</p>
+
+      <h2 class="cta-final-headline">
+        Comece Hoje com<br>
+        <span class="gold-text">Apenas US$&nbsp;20</span><br>
+        e Opere US$&nbsp;10.000
+      </h2>
+
+      <p class="cta-sub">
+        Vagas limitadas para reuniões esta semana. Marque a sua agora no WhatsApp, escolha o horário que funciona para você e dê o primeiro passo rumo ao mercado financeiro internacional.
+      </p>
+
+      <div class="cta-offer-chip">
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Sem experiência prévia
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Mentoria incluída
+        </span>
+        <span class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Banca de US$&nbsp;10.000
+        </span>
+      </div>
+
+      <a href="#" class="btn-gold pulse btn-modal" style="display:inline-flex;font-size:1.1rem;padding:18px 44px;" onclick="openModal(event)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 0C5.372 0 0 5.373 0 12.001c0 2.117.553 4.103 1.522 5.83L.038 23.998l6.345-1.664A11.954 11.954 0 0011.998 24C18.625 24 24 18.628 24 12.001 24 5.373 18.625 0 11.998 0zm0 21.998c-1.86 0-3.602-.5-5.102-1.373l-.364-.217-3.768.988 1.007-3.682-.237-.376A9.959 9.959 0 012 12.001C2 6.476 6.476 2 11.998 2 17.522 2 22 6.476 22 12.001c0 5.522-4.478 9.997-10.002 9.997z"/></svg>
+        Marcar Reunião pelo WhatsApp
+      </a>
+
+      <p class="disclaimer">
+        Ao marcar a reunião você concorda com nossos termos. Sem compromisso, sem custo.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 5: FOOTER
+──────────────────────────────────────────── -->
+<footer id="footer">
+  <div class="footer-logo">
+    <span class="gold-text">Évora</span>Capital
+  </div>
+  <p class="footer-tagline">Seu portal de entrada para o mercado financeiro global</p>
+
+  <p class="footer-label">Empresas disponíveis para operar no Mercado Global</p>
+
+  <div class="logos-row">
+    <div class="logo-pill">
+      <img src="https://i.ibb.co/qFgDp3YN/i490024.jpg" alt="Amazon" onerror="this.style.display='none'" />
+      <span>Amazon</span>
+    </div>
+    <div class="logo-pill">
+      <img src="https://i.ibb.co/qSMr0RR/novo-logo.jpg" alt="Mercado Livre" onerror="this.style.display='none'" />
+      <span>Mercado Livre</span>
+    </div>
+    <div class="logo-pill">
+      <img src="https://i.ibb.co/xSR8bRZ3/Meta-nova-marca-do-facebok-credito-divulgacao.jpg" alt="Meta" onerror="this.style.display='none'" />
+      <span>Meta (Facebook)</span>
+    </div>
+    <div class="logo-pill">
+      <img src="https://i.ibb.co/nTwQVyL/support-home-apple-logo-circle-blue.png" alt="Apple" onerror="this.style.display='none'" />
+      <span>Apple</span>
+    </div>
+    <div class="logo-pill">
+      <img src="https://i.ibb.co/qYsFmm55/mastercard-600.png" alt="Mastercard" onerror="this.style.display='none'" />
+      <span>Mastercard</span>
+    </div>
+  </div>
+
+  <p class="footer-copy">
+    © 2025 InvistaCapital · Todos os direitos reservados · Investir envolve riscos. Resultados passados não garantem resultados futuros.
+  </p>
+</footer>
+
+<!-- ──────────────────────────────────────────
+     MODAL — AGENDAR REUNIÃO
+──────────────────────────────────────────── -->
+<!-- ── STICKY MOBILE CTA ── -->
+<div class="sticky-cta">
+  <a href="#" class="btn-gold pulse" onclick="openModal(event)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 0C5.372 0 0 5.373 0 12.001c0 2.117.553 4.103 1.522 5.83L.038 23.998l6.345-1.664A11.954 11.954 0 0011.998 24C18.625 24 24 18.628 24 12.001 24 5.373 18.625 0 11.998 0zm0 21.998c-1.86 0-3.602-.5-5.102-1.373l-.364-.217-3.768.988 1.007-3.682-.237-.376A9.959 9.959 0 012 12.001C2 6.476 6.476 2 11.998 2 17.522 2 22 6.476 22 12.001c0 5.522-4.478 9.997-10.002 9.997z"/></svg>
+    Marcar Reunião pelo WhatsApp
+  </a>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOut(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3 class="modal-title">Agendar <span class="gold-text">Reunião</span></h3>
+    <p class="modal-sub">Escolha a data e horário — vamos te chamar no WhatsApp para confirmar.</p>
+
+    <label for="nome">Seu Nome Completo</label>
+    <input type="text" id="nome" placeholder="Ex: João da Silva" />
+
+    <label for="tel">WhatsApp (com DDD)</label>
+    <input type="tel" id="tel" placeholder="(11) 99999-9999" />
+
+    <div class="modal-grid-2">
+      <div>
+        <label>Data da Reunião</label>
+        <div class="day-picker" id="dayPicker">
+          <!-- preenchido via JS -->
+        </div>
+        <input type="hidden" id="data" />
+      </div>
+      <div>
+        <label for="hora">Horário</label>
+        <input type="time" id="hora" />
+      </div>
+    </div>
+
+    <a href="#" class="btn-gold btn-modal" id="btnConfirmar" onclick="confirmar(event)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 0C5.372 0 0 5.373 0 12.001c0 2.117.553 4.103 1.522 5.83L.038 23.998l6.345-1.664A11.954 11.954 0 0011.998 24C18.625 24 24 18.628 24 12.001 24 5.373 18.625 0 11.998 0zm0 21.998c-1.86 0-3.602-.5-5.102-1.373l-.364-.217-3.768.988 1.007-3.682-.237-.376A9.959 9.959 0 012 12.001C2 6.476 6.476 2 11.998 2 17.522 2 22 6.476 22 12.001c0 5.522-4.478 9.997-10.002 9.997z"/></svg>
+      Confirmar pelo WhatsApp
+    </a>
+  </div>
+</div>
+
+<script>
+/* ── MODAL ── */
+function openModal(e) {
+  e.preventDefault();
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('hora').value = '10:00';
+
+  // Build the two allowed dates: today and tomorrow
+  const MONTHS_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const DAYS_PT   = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+  function toLocalISO(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth()+1).padStart(2,'0');
+    const d = String(date.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+
+  const today    = new Date();
+  const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+
+  const options = [today, tomorrow];
+  const picker  = document.getElementById('dayPicker');
+  picker.innerHTML = '';
+
+  options.forEach((date, i) => {
+    const iso   = toLocalISO(date);
+    const num   = date.getDate();
+    const month = MONTHS_PT[date.getMonth()];
+    const dow   = DAYS_PT[date.getDay()];
+    const tag   = i === 0 ? 'Hoje' : 'Amanhã';
+
+    const el = document.createElement('div');
+    el.className = 'day-option' + (i === 0 ? ' selected' : '');
+    el.dataset.iso = iso;
+    el.innerHTML = `
+      <div class="day-label">${dow}</div>
+      <div class="day-num">${String(num).padStart(2,'0')}</div>
+      <div class="day-month">${month}</div>
+      <span class="day-tag">${tag}</span>
+    `;
+    el.addEventListener('click', () => {
+      picker.querySelectorAll('.day-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('data').value = iso;
+    });
+    picker.appendChild(el);
+  });
+
+  // Set hidden input to default (today)
+  document.getElementById('data').value = toLocalISO(today);
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOut(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function confirmar(e) {
+  e.preventDefault();
+  const nome  = document.getElementById('nome').value.trim();
+  const tel   = document.getElementById('tel').value.trim();
+  const data  = document.getElementById('data').value;
+  const hora  = document.getElementById('hora').value;
+
+  if (!nome || !tel || !data || !hora) {
+    alert('Por favor, preencha todos os campos.');
+    return;
+  }
+
+  // Format date
+  const [y, m, d2] = data.split('-');
+  const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const dateStr = `${d2}/${months[parseInt(m)-1]}/${y}`;
+
+  const msg = encodeURIComponent(
+    `Olá! Quero marcar uma reunião para aprender a investir com vocês! 🚀\n\n` +
+    `*Nome:* ${nome}\n` +
+    `*WhatsApp:* ${tel}\n` +
+    `*Data desejada:* ${dateStr}\n` +
+    `*Horário:* ${hora}\n\n` +
+    `Gostaria de começar com US$20 e acessar a banca de US$10.000!`
+  );
+
+  window.open(`https://wa.me/5511945481239?text=${msg}`, '_blank');
+  closeModal();
+}
+
+/* ── SCROLL REVEAL ── */
+const reveals = document.querySelectorAll('.reveal');
+
+function showReveal(el) {
+  el.classList.add('visible');
+}
+
+function checkViewport() {
+  reveals.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 200) showReveal(el);
+  });
+}
+
+// Fallback: force-show ALL reveals after 400ms no matter what
+const revealFallback = setTimeout(() => {
+  reveals.forEach(showReveal);
+}, 400);
+
+// Fire on both DOMContentLoaded and load to catch all cases
+document.addEventListener('DOMContentLoaded', checkViewport);
+window.addEventListener('load', checkViewport);
+window.addEventListener('scroll', checkViewport, { passive: true });
+
+// IntersectionObserver with generous rootMargin
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      showReveal(en.target);
+      io.unobserve(en.target);
+    }
+  });
+}, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
+
+reveals.forEach(el => io.observe(el));
+
+/* ── ANIMATED CHART ── */
+(function() {
+  const canvas = document.getElementById('chartCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Resize canvas to pixel ratio
+  function resize() {
+    const r = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * r;
+    canvas.height = rect.height * r;
+    ctx.scale(r, r);
+  }
+
+  // Generate random OHLC candles
+  function genCandles(n, base, vol) {
+    const arr = [];
+    let price = base;
+    for (let i = 0; i < n; i++) {
+      const o = price;
+      const change = (Math.random() - 0.45) * vol;
+      const c = Math.max(10, o + change);
+      const h = Math.max(o, c) + Math.random() * (vol * 0.5);
+      const l = Math.min(o, c) - Math.random() * (vol * 0.5);
+      arr.push({ o, h, l, c });
+      price = c;
+    }
+    return arr;
+  }
+
+  let candles = genCandles(28, 180, 8);
+  let offset = 0;
+  let volumes = Array.from({length: 28}, () => Math.random() * 0.8 + 0.2);
+
+  function renderVolBars() {
+    const strip = document.getElementById('volStrip');
+    if (!strip) return;
+    strip.innerHTML = '';
+    const maxV = Math.max(...volumes);
+    candles.forEach((c, i) => {
+      const bar = document.createElement('div');
+      bar.className = 'vol-bar';
+      const pct = ((volumes[i] || 0.3) / maxV * 100).toFixed(1);
+      bar.style.height = pct + '%';
+      bar.style.background = c.c >= c.o ? 'var(--green)' : '#ff5252';
+      strip.appendChild(bar);
+    });
+  }
+
+  function drawChart() {
+    const W = canvas.width / (window.devicePixelRatio || 1);
+    const H = canvas.height / (window.devicePixelRatio || 1);
+    ctx.clearRect(0, 0, W, H);
+
+    const prices = candles.flatMap(c => [c.h, c.l]);
+    const minP = Math.min(...prices) - 4;
+    const maxP = Math.max(...prices) + 4;
+    const range = maxP - minP;
+
+    const toY = p => H - ((p - minP) / range) * H;
+    const nC = candles.length;
+    const cw = W / nC;
+    const bodyW = Math.max(3, cw * 0.55);
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(245,200,66,0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = (H / 4) * i;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+
+    // Area fill
+    const lastBull = candles[candles.length - 1].c > candles[candles.length - 1].o;
+    const areaGrad = ctx.createLinearGradient(0, 0, 0, H);
+    areaGrad.addColorStop(0, 'rgba(245,200,66,0.1)');
+    areaGrad.addColorStop(1, 'rgba(245,200,66,0)');
+
+    ctx.beginPath();
+    candles.forEach((c, i) => {
+      const x = i * cw + cw / 2;
+      const y = toY((c.h + c.l) / 2);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+    ctx.fillStyle = areaGrad;
+    ctx.fill();
+
+    // Candles
+    candles.forEach((c, i) => {
+      const x = i * cw + cw / 2;
+      const oY = toY(c.o);
+      const cY = toY(c.c);
+      const hY = toY(c.h);
+      const lY = toY(c.l);
+      const bull = c.c >= c.o;
+      const color = bull ? '#00e676' : '#ff5252';
+
+      // Wick
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(x, hY); ctx.lineTo(x, lY); ctx.stroke();
+
+      // Body
+      const bodyTop = Math.min(oY, cY);
+      const bodyH = Math.max(2, Math.abs(oY - cY));
+      ctx.fillStyle = color;
+      ctx.fillRect(x - bodyW / 2, bodyTop, bodyW, bodyH);
+    });
+
+    // Last price line
+    const lp = candles[candles.length - 1].c;
+    const lyP = toY(lp);
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(245,200,66,0.5)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, lyP); ctx.lineTo(W, lyP); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function tick() {
+    // Evolve last candle
+    const last = candles[candles.length - 1];
+    const drift = (Math.random() - 0.48) * 1.2;
+    last.c = Math.max(50, last.c + drift);
+    last.h = Math.max(last.h, last.c);
+    last.l = Math.min(last.l, last.c);
+
+    if (Math.random() < 0.04) {
+      candles.push({ o: last.c, h: last.c, l: last.c, c: last.c });
+      if (candles.length > 32) candles.shift();
+    }
+
+    // Update price display
+    const priceEl = document.getElementById('live-price');
+    const changeEl = document.getElementById('live-change');
+    if (priceEl) {
+      const base = 185;
+      const pct = ((last.c - base) / base * 100);
+      // Map simulated price to a realistic PETR4 BRL range (~R$36–R$44)
+      const brlPrice = (36 + ((last.c - 150) / 80) * 8).toFixed(2);
+      priceEl.textContent = `R$ ${brlPrice}`;
+      changeEl.textContent = `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`;
+      changeEl.style.color = pct >= 0 ? 'var(--green)' : '#ff5252';
+      changeEl.style.background = pct >= 0 ? 'rgba(0,230,118,0.1)' : 'rgba(255,82,82,0.1)';
+    }
+
+    renderVolBars();
+
+    resize();
+    drawChart();
+  }
+
+  // Init
+  resize();
+  drawChart();
+  renderVolBars();
+  setInterval(tick, 800);
+  window.addEventListener('resize', () => { resize(); drawChart(); });
+})();
+</script>
+</body>
+</html>
